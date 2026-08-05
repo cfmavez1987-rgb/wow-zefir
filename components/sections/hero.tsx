@@ -32,6 +32,7 @@ export function Hero({ locale, translations }: HeroProps) {
     if (!container) return;
 
     function handleMouseMove(e: MouseEvent) {
+      if (!container) return;
       const rect = container.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
