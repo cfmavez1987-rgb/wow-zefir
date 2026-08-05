@@ -171,10 +171,16 @@ export function Footer({ locale, translations }: FooterProps) {
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-neutral-800">
-          <p className="text-body-sm text-neutral-500 text-center">
+        <div className="mt-12 pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-body-sm text-neutral-500">
             {translations.footer.copyright}
           </p>
+          <Link
+            href={`/${locale}/admin`}
+            className="text-body-sm text-neutral-600 hover:text-neutral-400 transition-colors"
+          >
+            Admin
+          </Link>
         </div>
       </div>
     </footer>
