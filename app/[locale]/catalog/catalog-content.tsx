@@ -44,10 +44,14 @@ export function CatalogContent({
   }, []);
 
   async function loadProducts() {
+    console.log("Loading products from API...");
     try {
       const res = await fetch("/api/admin/products");
+      console.log("API response status:", res.status);
       if (res.ok) {
         const data: SupabaseProduct[] = await res.json();
+        console.log("Received products count:", data.length);
+        console.log("Products data:", data);
         const converted: Product[] = data.map((p) => ({
           id: p.id,
           slug: p.slug,
@@ -62,7 +66,11 @@ export function CatalogContent({
           isHit: p.is_hit,
           isNew: p.is_new,
         }));
+        console.log("Converted products:", converted);
         setDynamicProducts(converted);
+      } else {
+        const errorData = await res.json();
+        console.error("API error:", errorData);
       }
     } catch (error) {
       console.error("Failed to load products:", error);
