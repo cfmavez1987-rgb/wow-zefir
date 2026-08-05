@@ -182,7 +182,7 @@ export default function EditProductPage() {
                 type="text"
                 value={formData.nameRu}
                 onChange={(e) => setFormData({ ...formData, nameRu: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 required
               />
             </div>
@@ -195,7 +195,7 @@ export default function EditProductPage() {
                 type="text"
                 value={formData.nameKk}
                 onChange={(e) => setFormData({ ...formData, nameKk: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 required
               />
             </div>
@@ -208,7 +208,7 @@ export default function EditProductPage() {
                 value={formData.descriptionRu}
                 onChange={(e) => setFormData({ ...formData, descriptionRu: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 required
               />
             </div>
@@ -221,7 +221,7 @@ export default function EditProductPage() {
                 value={formData.descriptionKk}
                 onChange={(e) => setFormData({ ...formData, descriptionKk: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 required
               />
             </div>
@@ -242,7 +242,7 @@ export default function EditProductPage() {
                 type="number"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 min={0}
                 step={1000}
                 required
@@ -256,7 +256,7 @@ export default function EditProductPage() {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as typeof formData.category })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               >
                 <option value="popular">Популярные</option>
                 <option value="new">Новинки</option>

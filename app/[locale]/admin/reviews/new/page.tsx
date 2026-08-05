@@ -76,7 +76,7 @@ export default function NewReviewPage() {
                 type="text"
                 value={formData.nameRu}
                 onChange={(e) => setFormData({ ...formData, nameRu: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Айгуль"
                 required
               />
@@ -90,7 +90,7 @@ export default function NewReviewPage() {
                 type="text"
                 value={formData.nameKk}
                 onChange={(e) => setFormData({ ...formData, nameKk: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Айгүл"
                 required
               />
@@ -104,7 +104,7 @@ export default function NewReviewPage() {
                 value={formData.textRu}
                 onChange={(e) => setFormData({ ...formData, textRu: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder="Заказывала букет на 8 марта..."
                 required
               />
@@ -118,7 +118,7 @@ export default function NewReviewPage() {
                 value={formData.textKk}
                 onChange={(e) => setFormData({ ...formData, textKk: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder="8 наурызға букетке тапсырыс бердім..."
                 required
               />

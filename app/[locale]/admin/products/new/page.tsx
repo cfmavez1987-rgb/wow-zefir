@@ -121,7 +121,7 @@ export default function NewProductPage() {
                 type="text"
                 value={formData.nameRu}
                 onChange={(e) => setFormData({ ...formData, nameRu: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Романтичные розовые розы"
                 required
               />
@@ -135,7 +135,7 @@ export default function NewProductPage() {
                 type="text"
                 value={formData.nameKk}
                 onChange={(e) => setFormData({ ...formData, nameKk: e.target.value })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Романтикалық қызыл раушандар"
                 required
               />
@@ -149,7 +149,7 @@ export default function NewProductPage() {
                 value={formData.descriptionRu}
                 onChange={(e) => setFormData({ ...formData, descriptionRu: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder="Нежный букет из зефирных роз..."
                 required
               />
@@ -163,7 +163,7 @@ export default function NewProductPage() {
                 value={formData.descriptionKk}
                 onChange={(e) => setFormData({ ...formData, descriptionKk: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder="Зефир раушандарының нәзік букеті..."
                 required
               />
@@ -185,7 +185,7 @@ export default function NewProductPage() {
                 type="number"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 min={0}
                 step={1000}
                 required
@@ -199,7 +199,7 @@ export default function NewProductPage() {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as ProductFormData["category"] })}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white text-neutral-900 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               >
                 <option value="popular">Популярные</option>
                 <option value="new">Новинки</option>
