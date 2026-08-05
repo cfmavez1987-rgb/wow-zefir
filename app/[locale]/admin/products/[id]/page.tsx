@@ -4,13 +4,29 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { ImageUpload } from "@/components/ui/image-upload";
-import { products, type Product } from "@/data/products";
+
+interface Product {
+  id: string;
+  slug: string;
+  name_ru: string;
+  name_kk: string;
+  description_ru: string;
+  description_kk: string;
+  price: number;
+  category: string;
+  colors: string[];
+  tags: string[];
+  images: string[];
+  is_hit: boolean;
+  is_new: boolean;
+}
 
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [product, setProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
@@ -30,24 +46,37 @@ export default function EditProductPage() {
   const [newColor, setNewColor] = useState("#E8A0BF");
 
   useEffect(() => {
-    const found = products.find((p) => p.id === params.id);
-    if (found) {
-      setProduct(found);
-      setFormData({
-        nameRu: found.name.ru,
-        nameKk: found.name.kk,
-        descriptionRu: found.description.ru,
-        descriptionKk: found.description.kk,
-        price: found.price,
-        category: found.category,
-        isHit: found.isHit || false,
-        isNew: found.isNew || false,
-        colors: found.colors,
-        tags: found.tags,
-        images: found.images,
-      });
-    }
+    loadProduct();
   }, [params.id]);
+
+  async function loadProduct() {
+    try {
+      const res = await fetch(`/api/admin/products/${params.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setProduct(data);
+        setFormData({
+          nameRu: data.name_ru || "",
+          nameKk: data.name_kk || "",
+          descriptionRu: data.description_ru || "",
+          descriptionKk: data.description_kk || "",
+          price: data.price || 0,
+          category: data.category || "popular",
+          isHit: data.is_hit || false,
+          isNew: data.is_new || false,
+          colors: data.colors || [],
+          tags: data.tags || [],
+          images: data.images || [],
+        });
+      } else {
+        setError("Товар не найден");
+      }
+    } catch (err) {
+      setError("Ошибка загрузки товара");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -95,12 +124,20 @@ export default function EditProductPage() {
     setFormData({ ...formData, colors: formData.colors.filter((c) => c !== color) });
   }
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (error && !product) {
     return (
       <div className="text-center py-12">
         <Icon name="gift" size={48} className="mx-auto text-neutral-300 mb-4" />
         <h3 className="font-display text-subheading font-semibold text-neutral-900 mb-2">
-          Товар не найден
+          {error}
         </h3>
         <button
           onClick={() => router.push(`/${locale}/admin/products`)}
@@ -126,7 +163,7 @@ export default function EditProductPage() {
           Редактирование товара
         </h1>
         <p className="text-body text-neutral-600 mt-1">
-          {product.name.ru}
+          {product?.name_ru}
         </p>
       </div>
 
