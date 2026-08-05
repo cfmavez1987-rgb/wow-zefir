@@ -115,36 +115,18 @@ export default async function ContactsPage({
           </div>
 
           {/* Additional Info */}
-          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
-            <div className="bg-cream rounded-xl p-6 sm:p-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                  <Icon name="mapPin" size={24} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-display text-subheading font-semibold text-neutral-900 mb-2">
-                    {translations.contacts.address}
-                  </h3>
-                  <p className="text-body text-neutral-600">
-                    {translations.contacts.addressValue}
-                  </p>
-                </div>
+          <div className="bg-cream rounded-xl p-6 sm:p-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
+                <Icon name="mapPin" size={24} className="text-primary" />
               </div>
-            </div>
-
-            <div className="bg-cream rounded-xl p-6 sm:p-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                  <Icon name="clock" size={24} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-display text-subheading font-semibold text-neutral-900 mb-2">
-                    {translations.contacts.workHours}
-                  </h3>
-                  <p className="text-body text-neutral-600">
-                    {translations.contacts.workHoursValue}
-                  </p>
-                </div>
+              <div>
+                <h3 className="font-display text-subheading font-semibold text-neutral-900 mb-2">
+                  {translations.contacts.address}
+                </h3>
+                <p className="text-body text-neutral-600">
+                  {translations.contacts.addressValue}
+                </p>
               </div>
             </div>
           </div>

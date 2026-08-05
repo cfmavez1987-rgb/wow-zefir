@@ -188,7 +188,7 @@ Vercel деплоит автоматически за 1-2 минуты.
 | Описание Instagram | `contacts.instagramDescription` |
 | Описание телефона | `contacts.phoneDescription` |
 | Адрес | `contacts.addressValue` |
-| Режим работы | `contacts.workHoursValue` |
+| Режим работы | Удалено |
 
 ### Блог (`/blog`)
 
