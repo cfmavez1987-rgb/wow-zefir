@@ -8,10 +8,6 @@ export async function GET() {
     return NextResponse.json({
       configured: false,
       error: "Переменные окружения не настроены",
-      missing: {
-        url: !supabaseUrl,
-        key: !supabaseKey,
-      },
     });
   }
 
@@ -30,12 +26,40 @@ export async function GET() {
       });
     }
 
-    const bucketExists = buckets?.some((b) => b.name === "product-images");
+    const BUCKET_NAME = "product-images";
+    const bucketExists = buckets?.some((b) => b.name === BUCKET_NAME);
+
+    if (!bucketExists) {
+      // Auto-create bucket
+      const { error: createError } = await supabase.storage.createBucket(BUCKET_NAME, {
+        public: true,
+        fileSizeLimit: 5 * 1024 * 1024,
+      });
+
+      if (createError) {
+        return NextResponse.json({
+          configured: true,
+          connected: true,
+          bucketExists: false,
+          bucketCreated: false,
+          error: `Не удалось создать бакет: ${createError.message}`,
+          instruction: "Создайте бакет вручную: Supabase Dashboard -> Storage -> New Bucket -> название: product-images -> галочка Public bucket",
+        });
+      }
+
+      return NextResponse.json({
+        configured: true,
+        connected: true,
+        bucketExists: true,
+        bucketCreated: true,
+        message: "Бакет product-images создан автоматически!",
+      });
+    }
 
     return NextResponse.json({
       configured: true,
       connected: true,
-      bucketExists,
+      bucketExists: true,
       buckets: buckets?.map((b) => b.name) || [],
     });
   } catch (error) {
