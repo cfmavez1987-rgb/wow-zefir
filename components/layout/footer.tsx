@@ -134,12 +134,6 @@ export function Footer({ locale, translations }: FooterProps) {
                   <span>г. Актау, Казахстан</span>
                 </div>
               </li>
-              <li>
-                <div className="flex items-center gap-2 text-body-sm text-neutral-400">
-                  <Icon name="clock" size={16} />
-                  <span>Ежедневно 9:00 - 21:00</span>
-                </div>
-              </li>
             </ul>
           </div>
 
