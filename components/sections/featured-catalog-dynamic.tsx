@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/shared/product-card";
 import { SectionTitle } from "@/components/shared/section-title";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-import { products as staticProducts, type Product } from "@/data/products";
+import type { Product } from "@/data/products";
 import type { Locale } from "@/lib/i18n";
 
 interface SupabaseProduct {
@@ -83,10 +83,8 @@ export function FeaturedCatalogDynamic({
     }
   }
 
-  // Get hit products: dynamic first, then static
-  const hitProducts = dynamicProducts.length > 0
-    ? dynamicProducts.slice(0, 6)
-    : staticProducts.filter((p) => p.isHit).slice(0, 6);
+  // Get hit products from Supabase only
+  const hitProducts = dynamicProducts.slice(0, 6);
 
   return (
     <section className="py-16 sm:py-24 bg-white">

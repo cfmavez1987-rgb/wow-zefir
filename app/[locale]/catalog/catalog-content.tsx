@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/shared/product-card";
 import { SectionTitle } from "@/components/shared/section-title";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-import { products as staticProducts, type Product } from "@/data/products";
+import type { Product } from "@/data/products";
 import type { Locale } from "@/lib/i18n";
 import ruTranslations from "@/data/translations/ru.json";
 
@@ -79,13 +79,8 @@ export function CatalogContent({
     }
   }
 
-  // Merge: dynamic products first, then static (avoid duplicates by slug)
-  const allProducts = [
-    ...dynamicProducts,
-    ...staticProducts.filter(
-      (sp) => !dynamicProducts.some((dp) => dp.slug === sp.slug)
-    ),
-  ];
+  // Use only products from Supabase
+  const allProducts = dynamicProducts;
 
   const categories: { key: Category; label: string }[] = [
     { key: "all", label: translations.catalog.filterAll },
