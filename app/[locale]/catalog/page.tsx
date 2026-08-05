@@ -1,4 +1,3 @@
-import { products } from "@/data/products";
 import ruTranslations from "@/data/translations/ru.json";
 import kkTranslations from "@/data/translations/kk.json";
 import type { Locale } from "@/lib/i18n";
@@ -20,7 +19,6 @@ export default async function CatalogPage({
     <CatalogContent
       locale={locale as Locale}
       translations={translations}
-      products={products}
     />
   );
 }
