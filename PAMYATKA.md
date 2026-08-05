@@ -118,6 +118,132 @@ Vercel деплоит автоматически за 1-2 минуты.
 
 ---
 
+## Редактирование текста на страницах
+
+Все тексты на сайте находятся в файлах:
+- `data/translations/ru.json` (русский)
+- `data/translations/kk.json` (казахский)
+
+### Главная страница (`/`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок "Зефирные букеты" | `hero.title` |
+| Подзаголовок | `hero.subtitle` |
+| Описание | `hero.description` |
+| Кнопка "Выбрать букет" | `hero.cta` |
+| Цена "от 15 000" | `hero.priceFrom` |
+
+### Каталог (`/catalog`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок "Каталог букетов" | `catalog.title` |
+| Подзаголовок | `catalog.subtitle` |
+| Фильтр "Все" | `catalog.filterAll` |
+| Фильтр "Популярные" | `catalog.filterPopular` |
+| Фильтр "Новинки" | `catalog.filterNew` |
+| Фильтр "Подарочные наборы" | `catalog.filterGifts` |
+
+### О нас (`/about`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок | `about.title` |
+| Подзаголовок | `about.subtitle` |
+| Описание компании | `about.description` |
+| Блок "Ручная работа" | `about.features.handmade.title` / `.description` |
+| Блок "Натуральные ингредиенты" | `about.features.quality.title` / `.description` |
+| Блок "Доставка по Актау" | `about.features.delivery.title` / `.description` |
+| Блок "Индивидуальный подход" | `about.features.custom.title` / `.description` |
+
+### Доставка и оплата (`/delivery`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок | `delivery.title` |
+| Подзаголовок | `delivery.subtitle` |
+| Блок "Доставка" | `delivery.methods.delivery.title` / `.description` |
+| Блок "Самовывоз" | `delivery.methods.pickup.title` / `.description` |
+| Заголовок оплаты | `delivery.payment.title` |
+| Способы оплаты | `delivery.payment.methods[]` (массив) |
+
+### Отзывы (`/reviews`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок | `reviews.title` |
+| Подзаголовок | `reviews.subtitle` |
+| Кнопка "Оставить отзыв" | `reviews.leaveReview` |
+
+**Отзывы добавляются через админку** (`/ru/admin/reviews`)
+
+### Контакты (`/contacts`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок | `contacts.title` |
+| Подзаголовок | `contacts.subtitle` |
+| Описание WhatsApp | `contacts.whatsappDescription` |
+| Описание Instagram | `contacts.instagramDescription` |
+| Описание телефона | `contacts.phoneDescription` |
+| Адрес | `contacts.addressValue` |
+| Режим работы | `contacts.workHoursValue` |
+
+### Блог (`/blog`)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Заголовок | `blog.title` |
+| Подзаголовок | `blog.subtitle` |
+
+**Статьи блога** -- в файле `app/[locale]/blog/page.tsx` (массив `blogPosts`)
+
+### Шапка (Header)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Главная | `header.home` |
+| Каталог | `header.catalog` |
+| О нас | `header.about` |
+| Доставка и оплата | `header.delivery` |
+| Отзывы | `header.reviews` |
+| Контакты | `header.contacts` |
+| Блог | `header.blog` |
+
+### Подвал (Footer)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| Описание компании | `footer.description` |
+| Копирайт | `footer.copyright` |
+
+### Общие тексты (кнопки, элементы)
+
+| Текст | Ключ в JSON |
+|-------|-------------|
+| "Заказать через WhatsApp" | `common.orderViaWhatsApp` |
+| "Смотреть каталог" | `common.viewCatalog` |
+| "Узнать больше" | `common.learnMore` |
+| "Подробнее" | `common.viewDetails` |
+| "Заказать" | `common.order` |
+| "Назад" | `common.back` |
+| Номер телефона | `common.phone` |
+
+### SEO-заголовки и описания
+
+| Страница | Ключ title | Ключ description |
+|----------|------------|------------------|
+| Главная | `seo.home.title` | `seo.home.description` |
+| Каталог | `seo.catalog.title` | `seo.catalog.description` |
+| О нас | `seo.about.title` | `seo.about.description` |
+| Доставка | `seo.delivery.title` | `seo.delivery.description` |
+| Отзывы | `seo.reviews.title` | `seo.reviews.description` |
+| Контакты | `seo.contacts.title` | `seo.contacts.description` |
+| Блог | `seo.blog.title` | `seo.blog.description` |
+
+---
+
 ## Частые задачи
 
 | Задача | Действие |
@@ -128,6 +254,9 @@ Vercel деплоит автоматически за 1-2 минуты.
 | Изменить текст на сайте | Изменить `data/translations/*.json` |
 | Добавить фото | Админка -> Товар -> Редактировать -> Загрузить |
 | Сменить пароль | Vercel -> Settings -> Environment Variables -> ADMIN_PASSWORD |
+| Изменить статьи блога | Файл `app/[locale]/blog/page.tsx` (массив `blogPosts`) |
+| Изменить логотип | Заменить файл `public/images/logo.jpeg` |
+| Изменить фон главной | Заменить файл `public/images/hero-bg.jpg` |
 
 ---
 
