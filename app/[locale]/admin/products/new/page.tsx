@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface ProductFormData {
   nameRu: string;
@@ -15,6 +16,7 @@ interface ProductFormData {
   isNew: boolean;
   colors: string[];
   tags: string[];
+  images: string[];
 }
 
 export default function NewProductPage() {
@@ -33,6 +35,7 @@ export default function NewProductPage() {
     isNew: false,
     colors: ["#E8A0BF", "#C4B5FD"],
     tags: [],
+    images: [],
   });
   const [newTag, setNewTag] = useState("");
   const [newColor, setNewColor] = useState("#E8A0BF");
@@ -308,21 +311,11 @@ export default function NewProductPage() {
             Фотографии
           </h2>
 
-          <div className="border-2 border-dashed border-neutral-200 rounded-xl p-8 text-center">
-            <Icon name="gift" size={48} className="mx-auto text-neutral-300 mb-4" />
-            <p className="text-body text-neutral-600 mb-2">
-              Перетащите фотографии сюда или нажмите для загрузки
-            </p>
-            <p className="text-caption text-neutral-400 mb-4">
-              PNG, JPG, WebP до 5MB
-            </p>
-            <button
-              type="button"
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-body-sm"
-            >
-              Выбрать файлы
-            </button>
-          </div>
+          <ImageUpload
+            value={formData.images}
+            onChange={(urls) => setFormData({ ...formData, images: urls })}
+            maxFiles={5}
+          />
         </div>
 
         <div className="flex gap-4">

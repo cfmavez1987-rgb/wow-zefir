@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { products, type Product } from "@/data/products";
 
 export default function EditProductPage() {
@@ -22,6 +23,7 @@ export default function EditProductPage() {
     isNew: false,
     colors: [] as string[],
     tags: [] as string[],
+    images: [] as string[],
   });
   const [newTag, setNewTag] = useState("");
   const [newColor, setNewColor] = useState("#E8A0BF");
@@ -41,6 +43,7 @@ export default function EditProductPage() {
         isNew: found.isNew || false,
         colors: found.colors,
         tags: found.tags,
+        images: found.images,
       });
     }
   }, [params.id]);
@@ -320,6 +323,18 @@ export default function EditProductPage() {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-soft p-6 mb-6">
+          <h2 className="font-display text-subheading font-semibold text-neutral-900 mb-4">
+            Фотографии
+          </h2>
+
+          <ImageUpload
+            value={formData.images}
+            onChange={(urls) => setFormData({ ...formData, images: urls })}
+            maxFiles={5}
+          />
         </div>
 
         <div className="flex gap-4">
