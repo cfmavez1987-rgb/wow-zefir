@@ -46,6 +46,8 @@ export default function NewProductPage() {
     setSaving(true);
     setError("");
 
+    console.log("Submitting form data:", formData);
+
     try {
       const res = await fetch("/api/admin/products", {
         method: "POST",
@@ -53,13 +55,18 @@ export default function NewProductPage() {
         body: JSON.stringify(formData),
       });
 
+      console.log("Response status:", res.status);
+      const data = await res.json();
+      console.log("Response data:", data);
+
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Ошибка сохранения");
       }
 
+      console.log("Product saved successfully:", data);
       router.push(`/${locale}/admin/products`);
     } catch (err) {
+      console.error("Error saving product:", err);
       setError(err instanceof Error ? err.message : "Ошибка сохранения товара");
     } finally {
       setSaving(false);

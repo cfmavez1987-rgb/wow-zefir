@@ -27,12 +27,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  console.log("POST /api/admin/products called");
+  
   const supabase = getSupabase();
   if (!supabase) {
+    console.error("Supabase not configured");
     return NextResponse.json({ error: "Supabase не настроен" }, { status: 500 });
   }
 
   const body = await request.json();
+  console.log("Received body:", JSON.stringify(body, null, 2));
 
   const slug = body.nameRu
     .toLowerCase()
@@ -56,6 +60,8 @@ export async function POST(request: Request) {
     is_new: body.isNew || false,
   };
 
+  console.log("Inserting product:", JSON.stringify(product, null, 2));
+
   const { data, error } = await supabase
     .from("products")
     .insert(product)
@@ -63,8 +69,10 @@ export async function POST(request: Request) {
     .single();
 
   if (error) {
+    console.error("Supabase error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  console.log("Product created:", data);
   return NextResponse.json(data);
 }
