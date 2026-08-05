@@ -1,28 +1,83 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductCard } from "@/components/shared/product-card";
 import { SectionTitle } from "@/components/shared/section-title";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-import type { Product } from "@/data/products";
+import { products as staticProducts, type Product } from "@/data/products";
 import type { Locale } from "@/lib/i18n";
 import ruTranslations from "@/data/translations/ru.json";
 
 type Category = "all" | "popular" | "new" | "gifts";
 
+interface SupabaseProduct {
+  id: string;
+  slug: string;
+  name_ru: string;
+  name_kk: string;
+  description_ru: string;
+  description_kk: string;
+  price: number;
+  category: string;
+  colors: string[];
+  images: string[];
+  is_hit: boolean;
+  is_new: boolean;
+}
+
 interface CatalogContentProps {
   locale: Locale;
   translations: typeof ruTranslations;
-  products: Product[];
 }
 
 export function CatalogContent({
   locale,
   translations,
-  products,
 }: CatalogContentProps) {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
+  const [dynamicProducts, setDynamicProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  async function loadProducts() {
+    try {
+      const res = await fetch("/api/admin/products");
+      if (res.ok) {
+        const data: SupabaseProduct[] = await res.json();
+        const converted: Product[] = data.map((p) => ({
+          id: p.id,
+          slug: p.slug,
+          name: { ru: p.name_ru, kk: p.name_kk },
+          description: { ru: p.description_ru, kk: p.description_kk },
+          price: p.price,
+          sizes: {},
+          colors: p.colors || [],
+          category: (p.category as Product["category"]) || "popular",
+          tags: [],
+          images: p.images || [],
+          isHit: p.is_hit,
+          isNew: p.is_new,
+        }));
+        setDynamicProducts(converted);
+      }
+    } catch (error) {
+      console.error("Failed to load products:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Merge: dynamic products first, then static (avoid duplicates by slug)
+  const allProducts = [
+    ...dynamicProducts,
+    ...staticProducts.filter(
+      (sp) => !dynamicProducts.some((dp) => dp.slug === sp.slug)
+    ),
+  ];
 
   const categories: { key: Category; label: string }[] = [
     { key: "all", label: translations.catalog.filterAll },
@@ -33,8 +88,8 @@ export function CatalogContent({
 
   const filteredProducts =
     activeCategory === "all"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+      ? allProducts
+      : allProducts.filter((p) => p.category === activeCategory);
 
   return (
     <section className="py-12 sm:py-16 lg:py-24">
@@ -58,8 +113,15 @@ export function CatalogContent({
           ))}
         </div>
 
+        {/* Loading */}
+        {loading && (
+          <div className="flex justify-center py-12">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
+        {!loading && filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {filteredProducts.map((product) => (
               <ProductCard
@@ -70,7 +132,7 @@ export function CatalogContent({
               />
             ))}
           </div>
-        ) : (
+        ) : !loading ? (
           <div className="text-center py-16">
             <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Icon name="filter" size={24} className="text-neutral-400" />
@@ -82,7 +144,7 @@ export function CatalogContent({
               {translations.catalog.tryDifferentFilter}
             </p>
           </div>
-        )}
+        ) : null}
       </div>
     </section>
   );
