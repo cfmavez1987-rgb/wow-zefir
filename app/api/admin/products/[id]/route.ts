@@ -83,6 +83,39 @@ export async function DELETE(
   }
 
   const { id } = await params;
+
+  // First, get the product to find its images
+  const { data: product, error: fetchError } = await supabase
+    .from("products")
+    .select("images")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) {
+    return NextResponse.json({ error: fetchError.message }, { status: 404 });
+  }
+
+  // Delete images from Supabase storage
+  if (product?.images && product.images.length > 0) {
+    const BUCKET_NAME = "product-images";
+    const filesToDelete: string[] = [];
+
+    for (const imageUrl of product.images) {
+      // Extract filename from URL
+      // URL format: https://xxx.supabase.co/storage/v1/object/public/product-images/filename.jpg
+      const urlParts = imageUrl.split("/");
+      const filename = urlParts[urlParts.length - 1];
+      if (filename) {
+        filesToDelete.push(filename);
+      }
+    }
+
+    if (filesToDelete.length > 0) {
+      await supabase.storage.from(BUCKET_NAME).remove(filesToDelete);
+    }
+  }
+
+  // Delete the product from database
   const { error } = await supabase.from("products").delete().eq("id", id);
 
   if (error) {
