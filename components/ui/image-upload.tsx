@@ -10,6 +10,58 @@ interface ImageUploadProps {
   maxFiles?: number;
 }
 
+// Compress image using canvas
+async function compressImage(file: File, maxWidth = 1200, quality = 0.7): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        // Resize if wider than maxWidth
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              resolve(file);
+              return;
+            }
+            const compressedFile = new File([blob], file.name, {
+              type: "image/jpeg",
+              lastModified: Date.now(),
+            });
+            resolve(compressedFile);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+      img.onerror = reject;
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export function ImageUpload({
   value = [],
   onChange,
@@ -18,6 +70,7 @@ export function ImageUpload({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [dragActive, setDragActive] = useState(false);
+  const [progress, setProgress] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = useCallback(
@@ -35,10 +88,16 @@ export function ImageUpload({
         }
 
         const file = files[i];
-        const formData = new FormData();
-        formData.append("file", file);
+        setProgress(`Сжатие ${i + 1}/${files.length}...`);
 
         try {
+          // Compress image before upload
+          const compressedFile = await compressImage(file, 1200, 0.7);
+          setProgress(`Загрузка ${i + 1}/${files.length}...`);
+
+          const formData = new FormData();
+          formData.append("file", compressedFile);
+
           const res = await fetch("/api/admin/upload", {
             method: "POST",
             body: formData,
@@ -61,6 +120,7 @@ export function ImageUpload({
       }
 
       setUploading(false);
+      setProgress("");
     },
     [value, onChange, maxFiles]
   );
@@ -155,7 +215,7 @@ export function ImageUpload({
           {uploading ? (
             <div className="flex flex-col items-center">
               <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mb-3" />
-              <p className="text-body-sm text-neutral-600">Загрузка...</p>
+              <p className="text-body-sm text-neutral-600">{progress || "Загрузка..."}</p>
             </div>
           ) : (
             <>
@@ -168,7 +228,7 @@ export function ImageUpload({
                 Перетащите фотографии сюда или нажмите для загрузки
               </p>
               <p className="text-caption text-neutral-400 mb-4">
-                PNG, JPG, WebP до 5MB
+                PNG, JPG, WebP до 5MB (автоматическое сжатие)
               </p>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-body-sm">
                 <Icon name="gift" size={16} />
