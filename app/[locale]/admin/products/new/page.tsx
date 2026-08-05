@@ -24,6 +24,7 @@ export default function NewProductPage() {
   const params = useParams();
   const locale = params.locale as string;
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState<ProductFormData>({
     nameRu: "",
     nameKk: "",
@@ -40,16 +41,29 @@ export default function NewProductPage() {
   const [newTag, setNewTag] = useState("");
   const [newColor, setNewColor] = useState("#E8A0BF");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError("");
 
-    // Here you would save to Supabase
-    // For now, just show success and redirect
-    setTimeout(() => {
-      alert("Товар добавлен! (В реальной версии данные сохраняются в Supabase)");
+    try {
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Ошибка сохранения");
+      }
+
       router.push(`/${locale}/admin/products`);
-    }, 500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ошибка сохранения товара");
+    } finally {
+      setSaving(false);
+    }
   }
 
   function addTag() {
@@ -317,6 +331,12 @@ export default function NewProductPage() {
             maxFiles={5}
           />
         </div>
+
+        {error && (
+          <div className="bg-error-light text-error p-4 rounded-xl mb-6">
+            {error}
+          </div>
+        )}
 
         <div className="flex gap-4">
           <button

@@ -11,6 +11,7 @@ export default function EditProductPage() {
   const params = useParams();
   const locale = params.locale as string;
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [product, setProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
     nameRu: "",
@@ -48,14 +49,29 @@ export default function EditProductPage() {
     }
   }, [params.id]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError("");
 
-    setTimeout(() => {
-      alert("Товар обновлён! (В реальной версии данные сохраняются в Supabase)");
+    try {
+      const res = await fetch(`/api/admin/products/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Ошибка сохранения");
+      }
+
       router.push(`/${locale}/admin/products`);
-    }, 500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ошибка сохранения товара");
+    } finally {
+      setSaving(false);
+    }
   }
 
   function addTag() {
@@ -336,6 +352,12 @@ export default function EditProductPage() {
             maxFiles={5}
           />
         </div>
+
+        {error && (
+          <div className="bg-error-light text-error p-4 rounded-xl mb-6">
+            {error}
+          </div>
+        )}
 
         <div className="flex gap-4">
           <button
