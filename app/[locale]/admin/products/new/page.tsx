@@ -46,8 +46,6 @@ export default function NewProductPage() {
     setSaving(true);
     setError("");
 
-    console.log("Submitting form data:", formData);
-
     try {
       const res = await fetch("/api/admin/products", {
         method: "POST",
@@ -55,18 +53,14 @@ export default function NewProductPage() {
         body: JSON.stringify(formData),
       });
 
-      console.log("Response status:", res.status);
       const data = await res.json();
-      console.log("Response data:", data);
 
       if (!res.ok) {
         throw new Error(data.error || "Ошибка сохранения");
       }
 
-      console.log("Product saved successfully:", data);
       router.push(`/${locale}/admin/products`);
     } catch (err) {
-      console.error("Error saving product:", err);
       setError(err instanceof Error ? err.message : "Ошибка сохранения товара");
     } finally {
       setSaving(false);
@@ -345,11 +339,11 @@ export default function NewProductPage() {
           </div>
         )}
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
           >
             {saving ? (
               <>

@@ -68,7 +68,8 @@ export default function AdminProductsPage() {
     const matchesFilter =
       filter === "all" ||
       (filter === "hit" && product.is_hit) ||
-      product.category === filter;
+      (filter === "new" && product.is_new) ||
+      (filter !== "hit" && filter !== "new" && product.category === filter);
 
     const matchesSearch =
       searchQuery === "" ||

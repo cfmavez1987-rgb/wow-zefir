@@ -15,7 +15,7 @@ export async function GET() {
   }
 
   const { data, error } = await supabase
-    .from("products")
+    .from("reviews")
     .select("*")
     .order("created_at", { ascending: false });
 
@@ -34,32 +34,18 @@ export async function POST(request: Request) {
 
   const body = await request.json();
 
-  const timestamp = Date.now();
-  const slug = body.nameRu
-    .toLowerCase()
-    .replace(/[^a-z0-9а-яё]/gi, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "") || `product-${timestamp}`;
-
-  const product = {
-    slug,
+  const review = {
     name_ru: body.nameRu,
     name_kk: body.nameKk,
-    description_ru: body.descriptionRu,
-    description_kk: body.descriptionKk,
-    price: body.price,
-    sizes: body.sizes || {},
-    colors: body.colors || [],
-    category: body.category || "popular",
-    tags: body.tags || [],
-    images: body.images || [],
-    is_hit: body.isHit || false,
-    is_new: body.isNew || false,
+    text_ru: body.textRu,
+    text_kk: body.textKk,
+    rating: body.rating || 5,
+    date: new Date().toISOString().split("T")[0],
   };
 
   const { data, error } = await supabase
-    .from("products")
-    .insert(product)
+    .from("reviews")
+    .insert(review)
     .select()
     .single();
 

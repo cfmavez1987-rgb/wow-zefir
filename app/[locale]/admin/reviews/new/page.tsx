@@ -9,6 +9,7 @@ export default function NewReviewPage() {
   const params = useParams();
   const locale = params.locale as string;
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     nameRu: "",
     nameKk: "",
@@ -17,14 +18,29 @@ export default function NewReviewPage() {
     rating: 5,
   });
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError("");
 
-    setTimeout(() => {
-      alert("Отзыв добавлен! (В реальной версии данные сохраняются в Supabase)");
+    try {
+      const res = await fetch("/api/admin/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Ошибка сохранения");
+      }
+
       router.push(`/${locale}/admin/reviews`);
-    }, 500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ошибка сохранения отзыва");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -139,11 +155,17 @@ export default function NewReviewPage() {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        {error && (
+          <div className="bg-error-light text-error p-4 rounded-xl mb-6">
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-4">
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
           >
             {saving ? (
               <>
